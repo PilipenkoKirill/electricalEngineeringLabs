@@ -1,0 +1,402 @@
+\documentclass[14pt,a4paper]{article}
+% \usepackage{cmap} %Улучшает поиск по pdf документу
+%%%%%%%%%%%%%%Пользовательские команды%%%%%%%%%
+\usepackage{latexsym,amsmath,amssymb,amsbsy,graphicx}
+\usepackage{icomma}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage[american]{circuitikz}
+\usepackage{mathtext} 				% русские буквы в формулах
+\usepackage{caption}
+\usepackage{subfigure}
+\usepackage[version=4]{mhchem} % the canonical chemistry package (example: \ce{^{32}_{15}P})
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+%%%%%%%%%%%%%%%%%%%%%%%%Оформление по ГОСТУ
+\usepackage{fontspec}
+\setmainfont[Renderer=Basic,Ligatures={TeX}]{Times New Roman}
+\usepackage[english,russian]{babel} %Поддержка русской локализации
+\usepackage[14pt]{extsizes} % для того чтобы задать нестандартный 14-ый размер шрифта
+\usepackage{indentfirst} %Задаёт отступ самого первого абзаца
+\setlength\parindent{1.25cm}
+\usepackage[a4paper, left=3cm, top=1.5cm, right=1.5cm, bottom=2cm]{geometry}
+\usepackage{setspace}
+%\sloppy %Выравнивание текст по ширине и решение проблемы переполнением строки
+\onehalfspacing %Полуторный интервал
+\usepackage{mathtext} % русские буквы в формулах
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\begin{center}
+  \textbf{\large Лабораторная работа №5} \vspace{1cm}
+
+  \textbf{\Large Исследование переходных процессов в RC-цепях}
+\end{center}
+  
+\textbf{\underline{Цель работы:}} исследовать RC-цепи при подаче на их вход однополярных прямоугольных импульсов различной частоты; получить на экране осциллографа осциллограммы выходных сигналов и определить по полученным осциллограммам частоту среза RC-цепи.
+
+\textbf{\underline{Приборы и принадлежности:}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item Осциллограф GOS-620,
+\item Мультиметр АРРА-62,
+\item Генератор прямоугольных импульсов,
+\item Монтажная плата для сборки RC-цепей (одна и та же плата используется при выполнении лабораторных работ №4 и №5),
+\item Соединительные провода.
+\end{enumerate}
+
+\textbf{Контрольные вопросы}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item Запишите закон изменения напряжения на конденсаторе и резисторе при
+  зарядке конденсатора от источника постоянного напряжения через
+  резистор R, если конденсатор предварительно был разряжен. Представьте
+  соответствующие графики.
+\item Запишите закон изменения напряжения на конденсаторе и резисторе при разрядке конденсатора через резистор R, если конденсатор был полностью
+  заряжен. Представьте соответствующие графики.
+\item
+  Нарисуйте схемы интегрирующей и дифференцирующей RC - цепей.
+\item
+  Объясните формулы (1) и (9) из раздела «Краткая теория».
+\item
+  Запишите и объясните условия интегрирования и дифференцирования
+  напряжения с помощью RC-цепей.
+\item
+  Объясните, почему RC-цепь с резистором на выходе называется
+  дифференцирующей, а RC-цепь с конденсатором на выходе --  интегрирующей.
+\item
+  Что такое скважность импульсов, относительная длительность импульсов.
+\item
+  Какой электрический сигнал называют меандр.
+\item
+  Как фильтрующие свойства RC--цепей влияют на форму выходных сигналов,
+  если на вход подаётся сигнал типа меандр.
+\item
+  Что такое частота среза для RC-цепи и как она связана с постоянной
+  времени RC-цепи.
+\item
+  Зарисуйте в тетрадях экспериментальные установки для наблюдения
+  переходных процессов в RC-цепях.
+\end{enumerate}
+
+\textbf{Краткая теория}
+
+Простейшая RC-цепь представляет собой последовательно соединённые
+резистор и конденсатор (рис.\ref{DifAndIntCirc}). Цепь с резистором на выходе называется дифференцирующей RC-цепью, с конденсатором -- интегрирующей RC-цепью.
+
+Исследуем переходные процессы в RC-цепях при подаче на вход
+прямоугольного однополярного импульса, такого, что время импульса \(t_\text{и}\) равно времени паузы (рис.\ref{variousSignals} и рис. \ref{ResistInten}). Такой сигнал называют
+меандр.
+
+\begin{figure}[htbp]
+  \begin{minipage}{.48\textwidth}
+  \centering
+  \begin{circuitikz}
+    \draw (0,3) to[C=C,o-] (3,3) to[short,-o] (4,3);
+    \draw (0,0) to[short,o-o] (4,0);
+    \draw(3,0)  to[generic, *-*, l=R] (3,3);
+    \draw[<->] (0,0.05) -- (0,2.95) node [pos=.5, anchor=east] {$U_\text{вх.}$};
+    \draw[<->] (4,0.05) -- (4,2.95) node [pos=.5, anchor=west] {$U_\text{вых.}$};
+  \end{circuitikz} \\
+  Дифференцирующая RC-цепь
+\end{minipage}\hfill
+\begin{minipage}{.48\textwidth}
+  \begin{circuitikz}
+    \draw (0,3) to[generic=R,o-] (3,3) to[short,-o] (4,3);
+    \draw (0,0) to[short,o-o] (4,0);
+    \draw(3,0)  to[C=C, *-*,] (3,3);
+    \draw[<->] (0,0.05) -- (0,2.95) node [pos=.5, anchor=east] {$U_\text{вх.}$};
+    \draw[<->] (4,0.05) -- (4,2.95) node [pos=.5, anchor=west] {$U_\text{вых.}$};
+  \end{circuitikz} \\
+  Интегрирующая RC-цепь
+\end{minipage}
+  \caption{}
+  \label{DifAndIntCirc}
+\end{figure}
+
+\emph{\textbf{Переходные процессы в интегрирующей RC-цепи}}
+
+При подаче прямоугольного импульса на вход интегрирующей RC-цепи конденсатор заряжается при наличии импульса и разряжается во время
+паузы, формируя таким образом сигнал на выходе (см.рис. \ref{variousSignals}). На формы выходного напряжения влияет величина τ -- постоянная времени RC-цепи.
+Рассмотрим данный вопрос подробнее.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (0,0) -- (0,2) node [anchor=east] {U\textsubscript{вх.}};
+    \draw[->] (0,0) -- (4.5,0) node [anchor=north] {$t$};
+    \draw[thick, red] (0,1) foreach \x in {0,2} {-- (\x,1) -- (\x+1,1) -- (\x+1,0) -- (\x+2,0) };
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \draw[->] (0,0) -- (0,2) node [anchor=east] {$U_\text{вых.}$};
+    \draw[->] (0,0) -- (4.5,0) node [anchor=north] {$t$};
+    \foreach \i in {0,2} {
+    \draw[domain=0:1, variable=\x, smooth, red, thick, shift=({\i,0})] plot ({\x}, {1-e^(-\x/.12)});
+    \draw[domain=0:1, variable=\x, smooth, red, thick, shift=({\i+1,0})] plot ({\x}, {e^(-\x/.12)});}
+    \node[at={(4.5,2)},anchor=north east] {$\tau\ll t_\text{и}$};
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \draw[->] (0,0) -- (0,2) node [anchor=east] {$U_\text{вых.}$};
+    \draw[->] (0,0) -- (4.5,0) node [anchor=north] {$t$};
+    \foreach \i in {0,2} {
+    \draw[domain=0:1, variable=\x, smooth, red, thick, shift=({\i,0})] plot ({\x}, {1-e^(-\x/.3)});
+    \draw[domain=0:1, variable=\x, smooth, red, thick, shift=({\i+1,0})] plot ({\x}, {(1-e^(-1/.3))*e^(-\x/.3)});}
+    \node[at={(4.5,2)},anchor=north east] {$\tau = t_\text{и}$};
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \draw[->] (0,0) -- (0,2) node [anchor=east] {$U_\text{вых.}$};
+    \draw[->] (0,0) -- (4.5,0) node [anchor=north] {$t$};
+    \foreach \i in {0,2} {
+    \draw[domain=0:1, variable=\x, smooth, red, thick, shift=({\i,0})] plot ({\x}, {1-e^(-\x/1.2)});
+    \draw[domain=0:1, variable=\x, smooth, red, thick, shift=({\i+1,0})] plot ({\x}, {(1-e^(-1/1.2))*e^(-\x/.2)});}
+    \node[at={(4.5,2)},anchor=north east] {$\tau \gg t_\text{и}$};
+  \end{tikzpicture}
+  \caption{}
+  \label{variousSignals}
+\end{figure}
+
+Запишем выражения для вычисления тока в данной цепи:
+\begin{equation} \label{eq1}
+  i = \frac{U_{R}}{R} = \frac{U_\text{вх.} - U_\text{вых.}}{R} = C\frac{dU_\text{вых.}}{dt}.
+\end{equation}
+Из (\ref{eq1}) получим:
+\begin{equation} \label{eq2}
+  dU_\text{вых.} = \frac{1}{RC}\left( U_\text{вх.} - U_\text{вых.} \right)dt. 
+\end{equation}
+Приведём уравнение (\ref{eq2}) к виду:
+\begin{equation}
+  \frac{dU_\text{вых.}}{dt} + \frac{1}{RC}\left( U_\text{вых.} - U_\text{вх.} \right) = 0.
+\end{equation}
+Выходное напряжение является напряжением на конденсаторе: \(U_\text{вых.} = U_{C}.\) Тогда, получим
+\begin{equation} \label{eq4}
+  \frac{{dU}_{C}}{dt} + \frac{1}{RC}\left( U_{C} - U_\text{вх.} \right) = 0.
+\end{equation}
+Перепишем равенство (\ref{eq4}):
+\begin{equation*}
+\frac{{dU}_{C}}{dt} = \frac{1}{RC}\left( U_\text{вх.} - U_{C} \right)
+\end{equation*}
+и проинтегрируем его левую и правую части:
+\begin{equation} \label{eq5}
+  U_{C} = \frac{1}{RC}\int \left( U_\text{вх.} - U_{C} \right)dt = \frac{1}{RC}\int U_\text{вх.}dt - \frac{1}{RC}\int U_{C}dt.
+\end{equation}
+
+Рассмотрим 2 случая использования формулы (\ref{eq5}):
+\begin{enumerate}
+  \item \(U_{C} \ll \frac{1}{RC}\int U_{C}dt\), значит  \(\frac{1}{RC}\int U_\text{вх.}dt - \frac{1}{RC}\int U_{C}dt \approx 0\),
+  и, соответственно \(U_{C} \approx U_\text{вх.}.\) Очевидно, сигнал на выходе
+  приближённо повторяет входной сигнал. Для выполнения этого условия
+  необходимо, чтобы τ имела малую величину \(\tau \ll t_\text{и}\) (рис. \ref{variousSignals}).
+  \item \(U_{C} \gg \frac{1}{RC}\int U_{C}dt\), значит \(U_{C} \approx \frac{1}{RC}\int U_\text{вх.}dt\ \)~---~видно, что
+  выходное напряжение зависит от интеграла входного напряжения (отсюда и
+  название -- интегрирующая RC-цепь). В данном случае цепь хорошо выполняет свою интегрирующую функцию, и чем   будет больше величина τ, тем интегрирующие свойства будут лучше, т.е
+  \(\tau \gg t_\text{и}\) (рис. \ref{variousSignals}).
+\end{enumerate}
+
+Для объяснения формы выходных осциллограмм необходимо рассмотреть зарядно-разрядные процессы в цепи с конденсатором.
+
+\emph{\textbf{Зарядно-разрядные процессы в цепи с конденсатором.}}
+
+При подаче импульса на вход цепи конденсатор будет
+\emph{\textbf{заряжаться.}} При этом напряжение на конденсаторе не может
+измениться скачком. Получим формулу напряжения на конденсаторе при его
+зарядке, решив дифференциальное уравнение (\ref{eq4}) и положив, что в момент
+подачи импульса на вход цепи напряжение на конденсаторе будет равно
+нулю: \(U_{C}(0) = 0\). Решением уравнения (\ref{eq4}) будет функция:
+\begin{equation} \label{eq6}
+  U_{C}(t) = U_\text{вх.}\left( 1 - e^{- \frac{t}{\tau}} \right),
+\end{equation}
+где $\tau$~---~постоянная времени RC-цепи
+\[\tau = R \cdot C, \]
+а формула (\ref{eq6}) является формулой напряжения на конденсаторе в момент времени $t$ при его зарядке, при условии, что в начальный момент времени конденсатор был полностью разряжен. График напряжения конденсатора при его зарядке представлен на рисунке \ref{CondenInten}-a. Имея такой график, можно
+определить постоянную времени RC-цепи $\tau$, а так же частоту среза
+\(\nu_\text{ср}\), учитывая, что при $t=\tau$ формула (\ref{eq6}) принимает вид:
+\(U_{C}(t) = U_\text{вх.}\left( 1 - e^{- 1} \right) = 0,63U_\text{вх.}\).
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (0,0) -- (0,3.5) node [anchor=west] {U};
+    \draw[->] (0,0) node [anchor=north east] {0} -- (4.5,0) node [anchor=north] {$t$};
+    \draw[dashed] (0,0.63*3) -- (2.2,0.63*3) node [pos=0,anchor=east] {63\%};
+    \draw[dashed] (2.2,0) -- (2.2,0.63*3) node [pos=0,anchor=north] {$\tau$};
+    \draw[dashed, thick] (0,2.7) -- (4.5,2.7) node [pos=0,anchor=east] {U\textsubscript{вх.}};
+    \draw[domain=0:4.5, variable=\x, smooth, red, thick] plot ({\x}, {3*(1-e^(-\x/2.2))});
+    \node[at={(4.5,1.7)},anchor=north east] {а)};
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \draw[->] (0,0) -- (0,3.5) node [anchor=west] {U};
+    \draw[->] (0,0) node [anchor=north east] {0} -- (4.5,0) node [anchor=north] {$t$};
+    \draw[dashed] (0,0.37*3) -- (2.2,0.37*3) node [pos=0,anchor=east] {37\%};
+    \draw[dashed] (2.2,0) -- (2.2,0.37*3) node [pos=0,anchor=north] {$\tau$};
+    \draw[domain=0:4.5, variable=\x, smooth, red, thick] plot ({\x}, {3*(e^(-\x/2.2))});
+    \node[at={(4.5,1.7)},anchor=north east] {б)};
+  \end{tikzpicture}
+  \caption{Изменение напряжения конденсатора при его зарядке~(а) и разрядке~(б)}
+  \label{CondenInten}
+\end{figure}
+
+Если на входе цепи импульса нет, конденсатор будет
+\emph{\textbf{разряжаться.}} Но напряжение на конденсаторе не может уменьшиться скачком. Получим формулу напряжения на конденсаторе при его
+разрядке, решив дифференциальное уравнение (\ref{eq4}) и учитывая, что в момент
+отключения импульса на входе цепи \(U_{C}(0) = U_\text{вх.}.\) Решением уравнения (\ref{eq4}) будет в этом случае функция:
+\begin{equation} \label{eq7}
+  U_{C}(t) = U_\text{вх.}e^{- \frac{t}{\tau}}.
+\end{equation}
+
+Формула (\ref{eq7}) является формулой напряжения на конденсаторе при его разрядке, если в начальный момент конденсатор был заряжен до напряжения
+\(U_\text{вх.}\). Если \emph{t=τ} формула (7) примет вид:
+\(U_{C}(t) = U_\text{вх.}e^{- 1} = 0,37U_\text{вх.}\). График напряжения конденсатора при его разрядке представлен на рисунке \ref{CondenInten}-б. Имея такой график, можно определить постоянную времени RC-цепи $\tau$, а так же частоту среза $\nu_\text{ср}$.
+
+\emph{\textbf{Переходные процессы в дифференцирующей RC-цепи}}
+
+При подаче прямоугольного импульса на вход дифференцирующей цепи
+конденсатор заряжается и в соответствии с (6) напряжение на нём растёт.
+Напряжение на резисторе при этом уменьшается. Во время паузы конденсатор
+начинает разряжаться через источник напряжения в соответствии с формулой
+(7). При этом напряжение на резисторе растёт в обратной полярности
+(рис. \ref{ResistInten}). Рассмотрим данный вопрос подробнее.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[>=stealth]
+    \draw[->] (0,0) -- (0,2) node [anchor=east] {U\textsubscript{вх.}};
+    \draw[->] (0,0) -- (4.5,0) node [anchor=north] {$t$};
+    \draw[thick, red] (0,1) foreach \x in {0,2} {-- (\x,1) -- (\x+1,1) -- (\x+1,0) -- (\x+2,0) };
+  \end{tikzpicture}
+  \begin{tikzpicture}[>=stealth]
+    \draw[->] (0,-1) -- (0,2) node [anchor=east] {$U_\text{вых.}$};
+    \draw[->] (0,0) -- (4.5,0) node [anchor=north] {$t$};
+    \foreach \i in {0,2} {
+    \draw[domain=0:1, variable=\x, smooth, red, thick, shift=({\i,0})] plot ({\x}, {e^(-\x/2)});
+    \draw[domain=0:1, variable=\x, smooth, red, thick, shift=({\i+1,0}), rotate around x=180,
+    ] plot ({\x}, {e^(-\x/2)});}
+    \node[at={(4.5,2)},anchor=north east] {$\tau\gg t_\text{и}$};
+  \end{tikzpicture}
+  \begin{tikzpicture}[>=stealth]
+    \draw[->] (0,-1) -- (0,2) node [anchor=east] {$U_\text{вых.}$};
+    \draw[->] (0,0) -- (4.5,0) node [anchor=north] {$t$};
+    \foreach \i in {0,2} {
+    \draw[domain=0:1, variable=\x, smooth, red, thick, shift=({\i,0})] plot ({\x}, {e^(-\x/.35)});
+    \draw[domain=0:1, variable=\x, smooth, red, thick, shift=({\i+1,0}), rotate around x=180,
+    ] plot ({\x}, {e^(-\x/.35)});}
+    \node[at={(4.5,2)},anchor=north east] {$\tau = t_\text{и}$};
+  \end{tikzpicture}
+  \begin{tikzpicture}[>=stealth]
+    \draw[->] (0,-1) -- (0,2) node [anchor=east] {$U_\text{вых.}$};
+    \draw[->] (0,0) -- (4.5,0) node [anchor=north] {$t$};
+    \foreach \i in {0,2} {
+    \draw[domain=0:1, variable=\x, smooth, red, thick, shift=({\i,0})] plot ({\x}, {e^(-\x/.06)});
+    \draw[domain=0:1, variable=\x, smooth, red, thick, shift=({\i+1,0}), rotate around x=180,
+    ] plot ({\x}, {e^(-\x/.06)});}
+    \node[at={(4.5,2)},anchor=north east] {$\tau \ll t_\text{и}$};
+  \end{tikzpicture}
+  \caption{Напряжение на резисторе в RC-цепи}
+  \label{ResistInten}
+\end{figure}
+
+Выходное напряжение дифференцирующей RC-цепи равно напряжению на
+резисторе:
+\begin{equation} \label{eq8}
+  U_\text{вых.} = U_\text{вх.} - U_{C} = i \cdot R.
+\end{equation}
+Ток конденсатора прямо пропорционален скорости изменения напряжения, приложенного к нему:
+\begin{equation} \label{eq9}
+  i = C\frac{{dU}_{C}}{dt}.
+\end{equation}
+С учётом (\ref{eq8}) из (\ref{eq9}) получим:
+\begin{equation} \label{eq10}
+  U_\text{вых.} = CR\frac{{dU}_{C}}{dt} = CR\left( \frac{{dU}_\text{вх}}{dt} - \frac{dU_\text{вых.}}{dt} \right) = CR\frac{{dU}_\text{вх}}{dt} - CR\frac{dU_\text{вых.}}{dt}.
+\end{equation}
+
+Рассмотрим 2 случая использования формулы (\ref{eq10}):
+\begin{itemize}
+\item
+  \(CR\frac{dU_\text{вых.}}{dt} \ll U_\text{вых.}\), значит
+  \(U_\text{вых.} \approx \ CR\frac{{dU}_\text{вх}}{dt}\). Очевидно, что напряжение
+  на выходе представляет из себя дифференциал входного сигнала (отсюда и
+  название -- дифференцирующая RC-цепь). Можно заметить, что данное
+  условие лучше выполняется при малых значениях \(\tau\), и, чем меньше
+  будет $\tau$, тем лучше будет дифференцирование (рис. \ref{ResistInten}).
+\item \(CR\frac{dU_\text{вых.}}{dt} \gg U_\text{вых.}\), значит
+  \(CR\frac{{dU}_\text{вх}}{dt} = CR\frac{dU_\text{вых.}}{dt}\) или \(U_\text{вых.} = U_\text{вх.}\). Данное условие выполняется при больших значениях
+  τ (рис. \ref{ResistInten}).
+\end{itemize}
+
+\textbf{Лабораторные задания.}
+
+\begin{enumerate}
+\item Выберите на монтажной плате резистор и конденсатор. Пользуясь мультиметром АРРА-62 определите сопротивление резистора и ёмкость
+  конденсатора. \emph{\textbf{Внимание! При выполнении   лабораторных работ №4 и №5 используйте только одну пару элементов
+  резистор-конденсатор.}} Определите постоянную времени для выбранной
+  RC-цепи.
+\item Соберите цепь для исследования переходных процессов в дифференцирующей RC-цепи при подаче на его вход прямоугольных импульсов напряжения (рис. \ref{DifToOscilloscope}).
+
+\begin{figure}[hptb]
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{circuitikz}
+      \draw (0,3) to[C=C,o-] (3,3) to[short,-o] (4,3);
+      \draw (0,0) to[short,o-o] (4,0);
+      \draw(3,0) node[ground]{} to[generic, *-*, l=R] (3,3) ;
+      \draw[<->] (4,0.05) -- (4,2.95) node [pos=.5, anchor=west] {$U_\text{вых.}$};
+      \draw[{Circle}->] (1,2.94) -- (1,4) node[anchor=east] {Y1};
+      \draw[{Circle}->] (3.5,2.94) -- (3.5,4) node[anchor=east] {Y2};
+      %Поступаемый сигнал
+      \draw[->] (-2,1) -- (-2,2) node [anchor=east] {$U$};
+      \draw[->] (-2,1) -- (0.5,1) node [anchor=north] {$t$};
+      \draw[thick, red] (-2,1.6) foreach \x in {-2,-1} {-- (\x,1.6) -- (\x+.5,1.6) -- (\x+.5,1) -- (\x+1,1) };
+    \end{circuitikz}
+    \caption{}\label{DifToOscilloscope}
+  \end{minipage}\hfill
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \begin{circuitikz}
+      \draw (0,3) to[generic=R,o-] (3,3) to[short,-o] (4,3);
+      \draw (0,0) to[short,o-o] (4,0);
+      \draw(3,0) node[ground]{} to[C=C, *-*,] (3,3);
+      \draw[<->] (4,0.05) -- (4,2.95) node [pos=.5, anchor=west] {$U_\text{вых.}$};
+      \draw[{Circle}->] (.7,2.94) -- (.7,4) node[anchor=east] {Y1};
+      \draw[{Circle}->] (3.5,2.94) -- (3.5,4) node[anchor=east] {Y2};
+      %Поступаемый сигнал
+      \draw[->] (-2,1) -- (-2,2) node [anchor=east] {$U$};
+      \draw[->] (-2,1) -- (0.5,1) node [anchor=north] {$t$};
+      \draw[thick, red] (-2,1.6) foreach \x in {-2,-1} {-- (\x,1.6) -- (\x+.5,1.6) -- (\x+.5,1) -- (\x+1,1) };
+    \end{circuitikz}
+    \caption{}\label{IntToOscilloscope}
+  \end{minipage}
+\end{figure}
+
+\item Перерисуйте в тетрадь осциллограммы напряжений на выходе
+  дифференцирующей RC-цепи не менее чем для трёх различных длительностей
+  прямоугольных импульсов напряжения (постоянная времени RC-цепи
+  значительно больше длительности импульса, постоянная времени RC-цепи
+  примерно равна длительности импульса, постоянная времени RC-цепи
+  значительно меньше длительности импульса).
+\item
+  Соберите цепь для исследования переходных процессов в интегрирующей
+  RC-цепи при подаче на его вход прямоугольных импульсов напряжения
+  (рис. \ref{IntToOscilloscope}).
+\item
+  Перерисуйте в тетрадь осциллограммы напряжений на выходе интегрирующей
+  RC-цепи не менее чем для трёх различных длительностей прямоугольных
+  импульсов напряжения (постоянная времени RC-цепи значительно больше
+  длительности импульса, постоянная времени RC-цепи примерно равна
+  длительности импульса, постоянная времени RC-цепи значительно меньше
+  длительности импульса).
+\item
+  По полученным в заданиях 3 и 5 осциллограммам определите постоянную
+  времени RC-цепи, и сравните полученное значение с расчетным.
+\end{enumerate}
+
+\textbf{\underline{Литература.}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item Основы   промышленной электроники: Учеб. пособие для неэлектротехн. спец. вузов/ В.Г. Герасимов, О.М. Князьков, А.Е. Краснопольский, В.В. Сухоруков; Под ред. В.Г. Герасимова. - М.: Высш. шк., 1986. - 336 с.
+\item Ляшко М.Н. Радиотехника: Лаб. практикум. - Мн.: Выш. школа, 1981. - 269 с.
+\item Манаев Е.И. Основы радиоэлектроники: Учеб. пособие для вузов. - М.: Радио и связь, 1985. - 488 с.
+\item Инструкции к измерительным приборам.
+\end{enumerate}
+\end{document}
